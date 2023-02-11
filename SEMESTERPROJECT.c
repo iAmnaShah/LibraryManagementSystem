@@ -1,0 +1,660 @@
+/*Real World Scenario:
+“Dr. Tariq Najmi Sb is a librarian in a school and managing books manually. Now he wants to have a computerized system, so he
+hired you for the development of a new library management system for him.”As a programmer, I have to make a menu driven Library
+Management System with file-based database in C language. He has provided me with some menu options and functionalities
+(functions) that you must implement.File pointers, structural and file handling approach is used here.
+*/
+/*
+AUTHOR INFORMATION:
+Developer : Amna Shah
+Program Name: Library Management System
+Operating System : Windows 10
+IDE : Code Blocks 20.3
+Programming Language : C
+License : Public Domain 1.0
+Starting Date : 01-12-2022
+Ending Date : 01-01-2023
+*/
+//Purpose of The Program is to develop a library management system.
+/*Input: 	Book serial number
+ISBN number
+Book name (Book Title)
+Edition
+Author
+Is_Reserved
+*/
+/*Processing:
+Add Book
+Delete Book
+Search Book by
+ISBN (any unique number assigned to a book)
+Book name (Book title)
+Author name
+Modify/Update a book record
+Display all the books in library
+Issue book to any one
+Exit
+*/
+/*Output: Depends on the choice entered by the user. The output will be displayed on screen .
+It can also modifies the file if that particular choice is entered.
+*/
+//PROGRAM:
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+void password();
+void welcome();
+void menu();
+void Add_Book();
+void Delete_Book();
+void Search_Book();
+void Update_Record();
+void Display_Book();
+void Issue_Book();
+ struct book
+{
+    char name[20], author[20];
+    int reserved;
+    int edition, ISBN, serial_number;
+};
+int main()
+{
+
+    FILE *fp;
+    char choice = 'y';
+
+struct book
+ {
+    char name[20], author[20];
+    int reserved;
+    int edition, ISBN, serial_number;
+};
+
+    welcome();
+    menu();
+    return 0;
+}
+void welcome()
+{
+    int i;
+    printf("\t\t\t\t");
+    for(i=1; i<=60; i++)
+    printf("=");
+    printf("\n\t\t\t\t\t  WELCOME TO LIBRARY  MANAGEMENT  SYSTEM\t\t\t\t\t\n");
+    printf("\t\t\t\t");
+    for(i=1; i<=60; i++)
+    printf("=");
+    printf("\n");
+    for(i=1; i<=20; i++)
+    printf("=");
+    printf("\n\tMENU\t\t\n");
+    for(i=1; i<=20; i++)
+    printf("=");
+}
+void menu()
+{
+   int choice;
+   char ch;
+  int  another ;
+  // to make it user driven we use while loop
+   while(1)
+{
+    printf("\n1. Add Book");
+   printf("\n2. Delete Book");
+   printf("\n3. Search Book By");
+   printf("\n\t a) ISBN (any unique number assigned to a book) ");
+   printf("\n\t b) Book name( Book Title)");
+   printf("\n\t c) Author name ");
+   printf("\n4. Modify/ Update a book record");
+   printf("\n5. Display all the books in library");
+   printf("\n6. Issue book to any one");
+   printf("\n7. Exit");
+   printf("\n\n Press any number [1-7]");
+   scanf("%d",&choice);
+
+   switch(choice)
+   {
+        case 1:
+            Add_Book();
+            break;
+        case 2:
+            Delete_Book();
+            break;
+        case 3:
+            Search_Book();
+            break;
+        case 4:
+            Update_Record();
+            break;
+        case 5:
+            Display_Book();
+            break;
+        case 6:
+            Issue_Book();
+            break;
+        case 7:
+           exit(1);
+
+
+   }
+   printf("\nDo you want to continue?\nPress 1 to continue. Press 2 to exit. ");
+   scanf("%d",&another);
+   if(another == 2)
+   exit(1);
+
+
+   }
+
+
+
+}
+void Add_Book()
+{
+
+    FILE *fp;
+    //  Declaring file pointer variable
+    char choice = 'y';
+    // Declaring Structure elements
+struct book
+ {
+    char name[20], author[20];
+    int reserved;
+    int edition, ISBN, serial_number;
+};
+// Declaring Structure Variable
+ struct book b;
+ int i, n;
+    password();
+    //Opening File in write mode to make a library of books
+    fp = fopen("C:/Project/library.txt","w");
+    if( fp == NULL)
+    {
+        puts("Cannot open file");
+        exit(1);
+    }
+    //Clear Screen
+    system("cls");
+    printf(" \t\t\t\t\t<== Library Management System ==>\n");
+    printf("Enter number of Books you want to add in Library?");
+    scanf("%d", &n);
+    for(i=0; i<n; i++)
+    {
+        printf("Enter serial number:");
+        scanf("%d",&b.serial_number);
+        printf("Enter ISBN:");
+        scanf("%d",&b.ISBN);
+        printf("Enter edition of book:");
+        scanf("%d",&b.edition);
+        printf("Enter book name:");
+        scanf("%s",b.name);
+        printf("Enter author name:");
+        scanf("%s",b.author);
+        printf("If the book is reserved(y/n)?");
+        scanf("%d",&b.reserved);
+        fprintf(fp, "\n%d %d %d %s %s %d", b.serial_number, b.ISBN, b.edition, b.name, b.author, b.reserved);
+        fflush(stdin);
+    }
+
+    printf("\n\t\t\t\t\t***RECORD ADDED SUCCESFULLY***");
+    //Closing File
+    fclose(fp);
+   return 0;
+}
+
+void Delete_Book()
+{
+    FILE *fp;
+    FILE *fd;
+
+struct book b;
+char bookname[20];
+int flag, i, a, c, another;
+    system("cls");
+    printf("\t\t\t\t\t<== LIBRARY MANAGEMENT SYSTEM ==>\n");
+    // Opening File in Read Mode to read all records
+while(1)
+{
+    	fp = fopen("C:/Project/library.txt","r");
+    if( fp == NULL)
+    {
+        puts("Cannot open file");
+        exit(1);
+    }
+    // Opening Temporary File in Write Mode
+    fd= fopen("C://Project/temp.txt","w");
+    if( fd == NULL)
+    {
+        puts("Cannot open file");
+        exit(1);
+    }
+    // Old Book Name which you want to delete
+    printf("Enter book name:");
+    fflush(stdin);
+
+    gets(bookname);
+    flag = 0;
+    //Reading records from library file
+    while(fscanf(fp, "%d %d %d %s %s %d", &b.serial_number, &b.ISBN, &b.edition, b.name, b.author, &b.reserved)!=EOF)
+{
+    // Comparing old book name and book name from library
+    if(strcmp((bookname),b.name)==0 )
+    {
+        flag = 1;
+        //Deleting record if condition is true
+        continue;
+    }
+    // Printing records on temporary file
+    else
+    fprintf(fd,"%d %d %d %s %s %d\n", b.serial_number, b.ISBN, b.edition, b.name, b.author, b.reserved);
+
+}
+
+   fflush(stdin);
+
+    // Closing temporary and main file
+    fclose(fp);
+    fclose(fd);
+    //Removing library file
+     a = remove("C:/Project/library.txt");
+    // Renaming temporary file as library
+    c = rename("C:/Project/temp.txt", "C:/Project/library.txt");
+
+     if(a==0)
+     {
+
+        printf("\t\t\t\t\t***Book deleted successfully!***\n");
+     }
+     printf("Do you want to delete another book(Press 1)");
+     scanf("%d", &another);
+     if(another!=1)
+        break;
+}
+
+	return 0;
+}
+
+
+void Search_Book()
+{
+   int choice;
+   char another;
+    while(1)
+{
+    system("cls");
+    printf("\t\t\t\t\t<== LIBRARY MANAGEMENT SYSTEM ==>\n");
+   printf("Press 1: To search by ISBN\n");
+   printf("Press 2: To search by Book Title\n");
+   printf("Press 3: To search by Author Name\n");
+   // Searching upon choice entered by user
+   printf("Enter your choice:");
+   scanf("%d",&choice);
+   switch(choice)
+   {
+        case 1:
+            byISBN();
+            break;
+        case 2:
+            bybookname();
+            break;
+        case 3:
+            byauthorname();
+            break;
+
+   }
+   printf("Do you want to search another book?(y/n)");
+   scanf("%c",&another);
+   if(another == 'n')
+   return;
+
+}
+}
+void byISBN()
+{
+    FILE *fp;
+    char choice = 'y';
+struct book b;
+int Isbn;
+int flag, i, value;
+    //Opening file in read mode
+    fp = fopen("C:/Project/library.txt","r");
+    if( fp == NULL)
+    {
+        puts("Cannot open file");
+        exit(1);
+    }
+    //Enter ISBN through which you want to search the record
+    printf("Enter ISBN:");
+    fflush(stdin);
+    scanf("%d", &Isbn);
+    flag = 0;
+    //Reading all records from library file
+     while(fscanf(fp, "%d %d %d %s %s %d", &b.serial_number, &b.ISBN, &b.edition, b.name, b.author, &b.reserved)!=EOF)
+{
+    //If the entered ISBN and particular iteration ISBN match, then flag is 1
+    if(b.ISBN == Isbn)
+    {
+        printf("Book found\n");
+        flag = 1;
+        // Printing the record on output screen
+        printf(" SERIAL NUMBER:  ISBN:  EDITION:  BOOK NAME:  AUTHOR NAME:  RESERVED: \n");
+        printf(" %d\t\t%d\t  %d\t  %s\t      %s\t   %d\n", b.serial_number, b.ISBN, b.edition, b.name, b.author, b.reserved);
+        break;
+    }
+}
+    if(flag == 0)
+    printf("Book not found");
+    //Closing file
+    fclose(fp);
+    return 0;
+}
+
+void bybookname()
+{
+    FILE *fp;
+    char choice = 'y';
+struct book b;
+char bookname[20];
+int flag, i, value;
+    //Opening file in read mode
+    fp = fopen("C:/Project/library.txt","r");
+    if( fp == NULL)
+    {
+        puts("Cannot open file");
+        exit(1);
+    }
+    //Enter the book which you want to search
+    printf("Enter book name:");
+    fflush(stdin);
+    gets(bookname);
+    flag = 0;
+    //Reading all records
+     while(fscanf(fp, "%d %d %d %s %s %d", &b.serial_number, &b.ISBN, &b.edition, b.name, b.author, &b.reserved)!=EOF)
+{
+    //If entered book name and b.name matches
+    if(strcmp((bookname),b.name)==0 )
+    {
+        printf("Book found\n");
+        flag = 1;
+         printf(" SERIAL NUMBER:  ISBN:  EDITION:  BOOK NAME:  AUTHOR NAME:  RESERVED: \n");
+        // Printing the record on output screen
+        printf(" %d\t\t%d\t  %d\t  %s\t      %s\t   %d\n", b.serial_number, b.ISBN, b.edition, b.name, b.author, b.reserved);
+        break;
+    }
+}
+    if(flag == 0)
+    printf("Book not found");
+    //Closing file
+    fclose(fp);
+    return 0;
+}
+
+void byauthorname()
+{
+    FILE *fp;
+    char choice = 'y';
+struct book b;
+char authorname[20];
+int flag, i, value;
+    //Opening file in read mode
+    fp = fopen("C:/Project/library.txt","r");
+    if( fp == NULL)
+    {
+        puts("Cannot open file");
+        exit(1);
+    }
+    //Enter the name of author through which you want to search
+    printf("Enter author name:");
+    fflush(stdin);
+    gets(authorname);
+    flag = 0;
+    //Reading all records
+     while(fscanf(fp, "%d %d %d %s %s %d", &b.serial_number, &b.ISBN, &b.edition, b.name, b.author, &b.reserved)!=EOF)
+{
+    //Comparing the entered author name and b.name
+    if(strcmp((authorname),b.author)==0 )
+    {
+        printf("Book found\n");
+        flag = 1;
+        printf(" SERIAL NUMBER:  ISBN:  EDITION:  BOOK NAME:  AUTHOR NAME:  RESERVED: \n");
+        //Printing the particular record on screen
+        printf(" %d\t\t%d\t  %d\t  %s\t      %s\t   %d\n", b.serial_number, b.ISBN, b.edition, b.name, b.author, b.reserved);
+        break;
+    }
+}
+    if(flag == 0)
+    printf("Book not found");
+    //Closing file
+    fclose(fp);
+    return 0;
+}
+
+void Update_Record()
+{
+     FILE *fp;
+    FILE *ft;
+    int another;
+    while(1)
+    {
+    //Opening file in read mode
+     fp = fopen("C:/Project/library.txt","r");
+    if( fp == NULL)
+    {
+        puts("Cannot open file");
+        exit(1);
+    }
+    //Opening temporary file in write mode
+    ft= fopen("C:/Project/temp.txt","w");
+    if( ft == NULL)
+    {
+        puts("Cannot open file");
+        exit(1);
+    }
+    else
+        {
+struct book b;
+struct book t;
+char bookname[20];
+int flag, i, c, a;
+    password();
+    system("cls");
+    Display_Book();
+    printf("\t\t\t\t\t<== LIBRARY MANAGEMENT SYSTEM ==>\n");
+
+    //Enter book name which you want to update
+    printf("Enter book name:");
+    fflush(stdin);
+    gets(bookname);
+    flag = 0;
+    //Reading records from library file
+     while(fscanf(fp, "%d %d %d %s %s %d", &b.serial_number, &b.ISBN, &b.edition, b.name, b.author, &b.reserved)!=EOF)
+{
+    //Comparing entered book name with b.name of present iteration
+    if(strcmp((bookname),b.name)==0)
+    {
+        printf("Book found\n");
+        //If book is found, then update the whole record
+        printf("Enter serial number:");
+        scanf("%d",&t.serial_number);
+        printf("Enter ISBN:");
+        scanf("%d",&t.ISBN);
+        printf("Enter edition of book:");
+        scanf("%d",&t.edition);
+        printf("Enter book name:");
+        scanf("%s",t.name);
+        printf("Enter author name:");
+        scanf("%s",t.author);
+        printf("If the book is reserved(y/n)?");
+        scanf("%d",&t.reserved);
+        //Write new record on temporary file
+        fprintf(ft, "%d %d %d %s %s %d\n", t.serial_number, t.ISBN, t.edition, t.name, t.author, t.reserved);
+        fflush(stdin);
+
+
+   }
+    else
+        //write old records on temporary file
+         fprintf(ft, "%d %d %d %s %s %d\n", b.serial_number, b.ISBN, b.edition, b.name, b.author, b.reserved);
+}
+    //Closing both files
+    fclose(fp);
+    fclose(ft);
+    //Deleting library file
+     a = remove("C:/Project/library.txt");
+    //Rename the temporary file with library
+    c = rename("C:/Project/temp.txt", "C:/Project/library.txt");
+    if(c==0)
+        printf("\t\t\t\t\t*** File updated successfully! ***");
+    Display_Book();
+    printf("DO you want to update another record(Press 1)?");
+    scanf("%d", &another);
+    if(another!=1)
+        break;
+        }
+
+
+}
+        return 0;
+}
+
+void Display_Book()
+{
+
+    FILE *fp;
+    struct book b;
+    //Opening file in read mode
+    fp = fopen("C:/Project/library.txt","r");
+    if(fp == NULL)
+    {
+        puts("Cannot open file");
+        exit(1);
+    }
+    system("cls");
+    printf("\n \t\t\t\t\t\t*** LIBRARY ***\n");
+     printf(" SERIAL NUMBER:  ISBN:  EDITION:  BOOK NAME:  AUTHOR NAME:  RESERVED: \n");
+    // Reading records from library file
+    while(fscanf(fp,"%d %d %d %s %s %d\n",&b.serial_number,&b.ISBN,&b.edition,b.name,b.author,&b.reserved)!=EOF)
+    {
+
+        //Displaying records on output screen
+    printf(" %d\t\t%d\t  %d\t  %s\t      %s\t   %d\n",b.serial_number,b.ISBN,b.edition,b.name,b.author,b.reserved);
+    }
+    //Closing library file
+    fclose(fp);
+    return 0;
+}
+
+void Issue_Book()
+{
+    FILE *fp;
+    FILE *ft;
+    int another;
+    while(1)
+    {
+    // Opening file in read mode
+     fp = fopen("C:/Project/library.txt","r");
+    if( fp == NULL)
+    {
+        puts("Cannot open file");
+        exit(1);
+    }
+    //Opening temporary file in write mode
+    ft= fopen("C:/Project/temp.txt","w");
+    if( ft == NULL)
+    {
+        puts("Cannot open file");
+        exit(1);
+    }
+    else
+        {
+
+struct book b;
+struct book t;
+char bookname[20];
+int flag, i, value;
+    password();
+    system("cls");
+    printf("\t\t\t\t\t<== LIBRARY MANAGEMENT SYSTEM ==>\n");
+    //Enter book name you want to issue
+    printf("Enter book name:");
+    fflush(stdin);
+    gets(bookname);
+    flag = 0;
+    //Reading records from library file
+     while(fscanf(fp, "%d %d %d %s %s %d", &b.serial_number, &b.ISBN, &b.edition, b.name, b.author, &b.reserved)!=EOF)
+{
+    // If entered book name matches the bookname of present iteration
+    if(strcmp((bookname),b.name)==0)
+    {
+        value = 0;
+        if(value == 0 && b.reserved == 0)
+        {
+            printf("Do you want to issue the book(1/0)?");
+            //1 means already available
+            // If it is 0 means available to reserve
+            scanf("%d", &t.reserved);
+        printf("\t\t\t\t\t*** Book issued successfully! ***");
+        //Printing particular record on temporary file
+        fprintf(ft, "%d %d %d %s %s %d\n", b.serial_number, b.ISBN, b.edition, b.name, b.author, t.reserved);
+        fflush(stdin);
+            flag = 1;
+        }
+        else
+            printf("\t\t\t\t\t***The book is already reserved***\n");
+    }
+    else
+    {
+        //Printing all records on temporary file
+       fprintf(ft, "%d %d %d %s %s %d\n", b.serial_number, b.ISBN, b.edition, b.name, b.author, b.reserved);
+    }
+}
+}
+    // Closing both files
+   fclose(fp);
+    fclose(ft);
+    // Removing library file
+    int y = remove("C:/Project/library.txt");
+    //Renaming temporary file as library
+    int x = rename("C:/Project/temp.txt", "C:/Project/library.txt");
+    printf("\nDo you want to issue another Book(Press 1)?");
+    scanf("%d", &another);
+    if(another!=1)
+        break;
+    }
+
+     return 0;
+}
+
+void password()
+{
+    //Password for editing confidential information
+    system("cls");
+    //Password for system
+    char password[30] = "rfvgaofft";
+    char pass[30];
+    int value,choice;
+    while(1)
+    {
+        system("cls");
+        //Enter your password
+    printf("Enter password:\t");
+    scanf("%s",pass);
+    //Comparing the entered password and system password
+    value = strcmp(password, pass);
+    if(value==0)
+    {
+                printf("\n YOU ARE IN!");
+                break;
+    }
+
+    else
+    {
+        printf("\n INCORRECT PASSWORD ");
+         printf("\n Forgot Password ==> Try Again(Press 1 to exit, Press 2 to continue)?");
+        scanf("%d",&choice);
+        if(choice==1)
+            exit(1);
+    }
+
+    }
+    return 0;
+}
